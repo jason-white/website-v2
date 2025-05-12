@@ -4,9 +4,9 @@ Thanks for stopping by. There isn't much to see at the moment, but check back pe
 
 So far I've...
 
-- Moved my Hugo site back to Netlify
+- Moved my [Hugo](https://gohugo.io) site back to [Netlify](https://netlify.com/)
 - Added the banner linking here
-- Created a new 11ty project and GitHub repo (the page you're on now)
+- Created a new [11ty](https://www.11ty.dev/) project and GitHub repo (the page you're on now)
 
 My goal here is to design and build this site in the open using only ideas, sketches and the browser. No Figma, Penpot etc.
 
