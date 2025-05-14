@@ -3,3 +3,6 @@ node_modules/
 package-lock.json
 .cache
 .env
+
+# Local Netlify folder
+.netlify
