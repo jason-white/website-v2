@@ -1,3 +1,7 @@
+---
+layout: layouts/base.njk
+---
+
 # Hello 👋
 
 Thanks for stopping by. There isn't much to see at the moment, but check back periodically.

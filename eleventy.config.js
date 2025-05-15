@@ -1,7 +1,8 @@
 export default async function (eleventyConfig) {
+  eleventyConfig.addPassthroughCopy("./src/js");
   return {
     dir: {
-      input: "content",
+      input: "src",
     },
   };
 }

@@ -19,6 +19,9 @@
   "description": "",
   "type": "module",
   "dependencies": {
-    "@11ty/eleventy": "^3.0.0"
+    "@11ty/eleventy": "^3.0.0",
+    "@netlify/functions": "^3.1.8",
+    "dotenv": "^16.5.0",
+    "node-fetch": "^3.3.2"
   }
 }
