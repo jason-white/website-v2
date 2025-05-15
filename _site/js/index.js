@@ -3,7 +3,7 @@ const spotifyWrapper = document.querySelector(".spotify");
 const artistTemplate = (artistObject) =>
   `<a href="${artistObject.href}">${artistObject.name}</a>`;
 
-fetch("/.netlify/functions/spotify")
+fetch("https://jasonwhite.us/.netlify/functions/spotify")
   .then((res) => res.json())
   .then(({ url, name, artists, artworkUrl }) => {
     spotifyWrapper.innerHTML = `<p>
