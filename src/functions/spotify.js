@@ -3,7 +3,6 @@
  * https://henry.codes/writing/spotify-now-playing/
  */
 
-import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
 
