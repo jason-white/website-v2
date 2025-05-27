@@ -5,61 +5,67 @@
 
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+
 dotenv.config();
 
-export const handler = async (event, context) => {
+export async function handler(event, context) {
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+  const redirectUri = `${process.env.URL}/.netlify/functions/callback`;
 
-  const auth = Buffer.from(
-    `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
-  ).toString("base64");
+  const auth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
-  const tokenEndpoint = `https://accounts.spotify.com/api/token`;
-  const playerEndpoint = `https://api.spotify.com/v1/me/player/recently-played`;
-
-  const options = {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${auth}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: `grant_type=refresh_token&refresh_token=${refreshToken}&redirect_uri=${encodeURI(process.env.URL, +"/.netlify/functions/callback")}`,
-  };
-
-  const accessToken = await fetch(tokenEndpoint, options)
-    .then((res) => res.json())
-    .then((json) => {
-      return json.access_token;
-    })
-    .catch((err) => {
-      console.error(err);
+  try {
+    const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+        redirect_uri: redirectUri,
+      }),
     });
-  return fetch(`${playerEndpoint}?limit=1`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
-    .then((res) => res.json())
-    .then(({ items }) => {
-      const {
-        artists: artistsArray,
-        name,
-        external_urls: urls,
-        album,
-      } = items[0].track;
 
-      const artists = artistsArray.map((artist) => ({
-        name: artist.name,
-        href: artist.href,
-      }));
+    const tokenData = await tokenRes.json();
+    const accessToken = tokenData.access_token;
 
-      const url = urls.spotify;
-      const artworkUrl = album.images[1].url;
+    const playerRes = await fetch(
+      "https://api.spotify.com/v1/me/player/recently-played?limit=1",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ artists, name, url, artworkUrl }),
-      };
-    });
-};
+    const playerData = await playerRes.json();
+    const track = playerData.items[0].track;
+
+    const artists = track.artists.map((artist) => ({
+      name: artist.name,
+      href: artist.href,
+    }));
+
+    const result = {
+      artists,
+      name: track.name,
+      url: track.external_urls.spotify,
+      artworkUrl: track.album.images[1]?.url || track.album.images[0]?.url,
+    };
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result),
+    };
+  } catch (err) {
+    console.error("Spotify function error:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Internal Server Error" }),
+    };
+  }
+}

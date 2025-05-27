@@ -1,8 +1,18 @@
-node_modules/
-.DS_Store
-package-lock.json
+# Node modules
+node_modules
+
+# Generated files
+_site
+
+# Cache
 .cache
+
+# Secret stuffs
 .env
 
 # Local Netlify folder
 .netlify
+
+# Misc
+.DS_Store
+
