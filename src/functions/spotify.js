@@ -55,10 +55,11 @@ export const handler = async (event, context) => {
 
       const url = urls.spotify;
       const artworkUrl = album.images[1].url;
+      const albumName = album.name;
 
       return {
         statusCode: 200,
-        body: JSON.stringify({ artists, name, url, artworkUrl }),
+        body: JSON.stringify({ artists, name, url, albumName, artworkUrl }),
       };
     });
 };

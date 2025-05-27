@@ -5,8 +5,9 @@ const artistTemplate = (artistObject) =>
 
 fetch("/.netlify/functions/spotify")
   .then((res) => res.json())
-  .then(({ url, name, artists, artworkUrl }) => {
+  .then(({ url, name, artists, albumName, artworkUrl }) => {
     spotifyWrapper.innerHTML = `<p>
+
       <span class="artists">${artists
         .map((artist) => artistTemplate(artist))
         .join(", ")} - </span>
@@ -17,6 +18,6 @@ fetch("/.netlify/functions/spotify")
             </a>
         </span>
     </p>
-        <img class="artwork" src="${artworkUrl}"/>`;
+        <img class="artwork" src="${artworkUrl}" alt="Cover art for the album ${albumName}" />`;
   })
   .catch((err) => console.error(err));
