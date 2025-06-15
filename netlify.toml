@@ -1,6 +1,10 @@
+[functions]
+  directory = "src/functions"
+  node_bundler = "esbuild"
+
 [build]
   publish = "_site"
   command = "npm run build"
 
-[functions]
-  directory = "src/functions"
+[dev]
+  autoLaunch = false
