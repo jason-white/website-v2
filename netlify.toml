@@ -3,7 +3,7 @@
   node_bundler = "esbuild"
 
 [build]
-  publish = "_site"
+  publish = "dist"
   command = "npm run build"
 
 [dev]
