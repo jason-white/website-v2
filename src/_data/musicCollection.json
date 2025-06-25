@@ -1,0 +1,42 @@
+[
+  {
+    "artist": "Dream Unending",
+    "title": "Tide Turns Eternal",
+    "format": "Vinyl",
+    "release_id": "21925780",
+    "first_released": "2021",
+    "favorite": true
+  },
+  {
+    "artist": "Dream Unending",
+    "title": "Song Of Salvation",
+    "format": "Vinyl",
+    "release_id": "24978976",
+    "first_released": "2022",
+    "favorite": false
+  },
+  {
+    "artist": "Dream Unending & Worm",
+    "title": "Starpath",
+    "format": "Vinyl",
+    "release_id": "28997506",
+    "first_released": "2023",
+    "favorite": true
+  },
+  {
+    "artist": "The Police",
+    "title": "Ghost In The Machine",
+    "format": "Vinyl",
+    "release_id": "676581",
+    "first_released": "1981",
+    "favorite": true
+  },
+  {
+    "artist": "The Police",
+    "title": "Synchronicity",
+    "format": "Vinyl",
+    "release_id": "3151230",
+    "first_released": "1983",
+    "favorite": false
+  }
+]

@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "clean": "rm -rf _site",
+    "clean": "rm -rf dist",
     "dev": "npx @11ty/eleventy --serve",
     "build": "npm run clean && npx @11ty/eleventy"
   },
@@ -21,8 +21,11 @@
   "description": "",
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-fetch": "^5.1.0",
+    "@11ty/eleventy-img": "^6.0.4",
     "@netlify/functions": "^3.1.8",
     "dotenv": "^16.5.0",
+    "luxon": "^3.6.1",
     "netlify-cli": "^21.6.0"
   }
 }
