@@ -3,8 +3,8 @@
   node_bundler = "esbuild"
 
 [build]
+  command = "npm run prod"
   publish = "dist"
-  command = "npm run build"
 
 [dev]
   autoLaunch = false

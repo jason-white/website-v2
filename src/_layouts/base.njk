@@ -6,13 +6,16 @@ title: Jason White - v2
 <html lang="en">
   <head>
     <title>{{ title }}</title>
+    <link rel="stylesheet" href="/css/global.css" />
   </head>
 
   <body>
-    {{ content | safe }}
+    <div class="wrapper">
+      {{ content | safe }}
 
-    <h2>Now playing</h2>
-    <div class="spotify"></div>
+      <h2>Now playing</h2>
+      <div class="spotify"></div>
+    </div>
   </body>
 
   <script src="/js/index.js" type="module"></script>

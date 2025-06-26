@@ -1,0 +1,4 @@
+.layout {
+  --sidebar-target-width: max-content;
+  --sidebar-content-min-width: 75%;
+}

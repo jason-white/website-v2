@@ -1,50 +1,55 @@
 ---
 layout: base.njk
-permalink: "/music-collection/releases/index.html"
+permalink: '/music-collection/releases/index.html'
 ---
 
 {% set groupedItems = collections.releases | sort(attribute='title') | groupItems('title') %}
 
 <nav aria-label="alphabetical">
-  <ul role="list">
+  <ul role="list" class="cluster">
     {% for group in groupedItems %}
       <li><a href="#{{ group[0] | lower }}">{{ group[0] }}</a></li>
     {% endfor %}
   </ul>
 </nav>
 
-{% for group in groupedItems %} 
-
-<section>
-  <header>
-    <h2 id="{{ group[0] | lower }}" class="title">{{ group[0] }}</h2>
-  </header>
-  <ul role="list" class="index__list">
-    {% for release in group[1] %}
-    <li>
-      <a href="/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html" class="index__item surface">
-        <img
-          {{ 'loading=eager' if loop.index <=4 }}
-          src="../img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
-          sizes="120px"
-          alt="{{ release.title }}"
-          class="index__image">
-        <div class="index__details">
-          <h3 class="title">{{ release.title }}</h3>
-          <p class="meta">{{ release.artist }} <span class="format">({{ release.format }})</span></p>
-          {% if release.favorite %}
-          <div class="badge"><svg width="14" height="14" viewBox="0 0 24 24" class="icon-stroke" aria-hidden="true">
-            <use xlink:href="#icon-heart"></use>
-          </svg> favorite</div>
-          {% endif %}
-        </div>
-        <!-- <svg width="36" height="36" viewBox="-6 -6 36 36" class="index__action action icon-stroke" aria-hidden="true"> -->
-        <!--   <use xlink:href="#icon-chevron-right"></use> -->
-        <!-- </svg> -->
-      <!-- </a> -->
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-
+{% for group in groupedItems %}
+  <section>
+    <header>
+      <h2 id="{{ group[0] | lower }}" class="title">{{ group[0] }}</h2>
+    </header>
+    <ul role="list" class="stack">
+      {% for release in group[1] %}
+        <li>
+          <a
+            href="/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html"
+            class=""
+          >
+            <img
+              {{ 'loading=eager' if loop.index <=4 }}
+              src="../img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
+              sizes="120px"
+              alt="{{ release.title }}"
+              class=""
+            />
+            <div class="index__details">
+              <h3 class="">{{ release.title }}</h3>
+              <p class="">{{ release.artist }} <span class="">({{ release.format }})</span></p>
+              {% if release.favorite %}
+                <div class="badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" class="" aria-hidden="true">
+                    <use xlink:href="#icon-heart"></use>
+                  </svg>
+                  favorite
+                </div>
+              {% endif %}
+            </div>
+            <svg width="36" height="36" viewBox="-6 -6 36 36" class="" aria-hidden="true">
+              <use xlink:href="#icon-chevron-right"></use>
+            </svg>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
 {% endfor %}

@@ -1,0 +1,11 @@
+.center {
+  /* ↓ Remove padding from the width calculation */
+  box-sizing: content-box;
+  /* ↓ The maximum width is the maximum measure */
+  max-inline-size: 60ch;
+  /* ↓ Only affect horizontal margins */
+  margin-inline: auto;
+  /* ↓ Apply the minimum horizontal space */
+  padding-inline-start: var(--s1);
+  padding-inline-end: var(--s1);
+}

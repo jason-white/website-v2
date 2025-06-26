@@ -1,0 +1,26 @@
+/* 
+  Global styles 
+
+  Low-specificity, global styles that apply to the whole 
+  project: https://cube.fyi/css.html
+*/
+html,
+body {
+  height: 100vh;
+  height: 100dvh;
+}
+
+body {
+  background: var(--color-light);
+  color: var(--color-dark);
+  font-size: var(--size-step-0);
+  font-family: var(--font-base);
+  line-height: var(--leading-standard);
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
