@@ -10,12 +10,34 @@ title: Jason White - v2
   </head>
 
   <body>
-    <div class="wrapper">
+    <header class="wrapper">
+      <nav aria-label="main" class="site-nav">
+        <ul role="list" class="cluster">
+          {% for entry in collections.all | eleventyNavigation %}
+            <li>
+              <a
+                href="{{ entry.url }}"
+                {% if entry.url == page.url %}
+                  aria-current="page"
+                {% endif %}
+                {% if entry.url != '/' and entry.url != page.url and page.url.startsWith(entry.url) %}
+                  class="active"
+                {% endif %}
+                >{{ entry.title }}</a
+              >
+            </li>
+          {%- endfor %}
+        </ul>
+      </nav>
+    </header>
+    <main class="wrapper">
       {{ content | safe }}
 
-      <h2>Now playing</h2>
-      <div class="spotify"></div>
-    </div>
+      <section class="region">
+        <h2>Now playing</h2>
+        <div class="spotify"></div>
+      </section>
+    </main>
   </body>
 
   <script src="/js/index.js" type="module"></script>

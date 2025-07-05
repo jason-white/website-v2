@@ -2,37 +2,99 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title> | </title>
+    <title>Formats | Music Collection</title>
     <link rel="stylesheet" href="/css/global.css">
   </head>
 
   <body>
-    <div class="wrapper">
+    <header class="wrapper">
+      <nav aria-label="main" class="site-nav">
+        <ul role="list" class="cluster">
+          
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/music-collection/" class="active">Music Collection</a>
+            </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="wrapper">
       
 
-<ul role="list" class="index__grid">
-  
-  <li>
-    <a href="/music-collection/formats/vinyl.html" class="index__item index__item--vertical surface">
-      <h2 class="title">Vinyl</h2>
-      <div class="preview__grid">
-        
-      </div>
-      <p class="meta"><span class="counter">5</span> releases</p>
-      
-      <svg width="36" height="36" viewBox="-6 -6 36 36" class="index__action action icon-stroke" aria-hidden="true">
-        <use xlink:href="#icon-chevron-right"></use>
-      </svg>
-    </a>
-  </li>
-  
-</ul>
+
+
+  <nav aria-label="breadcrumb" class="breadcrumbs">
+    <ul role="list" class="cluster">
+        <li><a href="/music-collection/">Music Collection</a></li>
+    </ul>
+  </nav>
 
 
 
-      <h2>Now playing</h2>
-      <div class="spotify"></div>
-    </div>
+<div class="index__page-title ">
+  <h1>Formats</h1>
+</div>
+
+<section class="index">
+  <ul role="list" class="index__list">
+    
+      <li class="index__item">
+        <a href="/music-collection/formats/vinyl.html">
+          <div class="index__meta repel">
+            <h2 class="index__heading">Vinyl</h2>
+            <p class="index__secondary"><span class="counter">231</span> releases</p>
+          </div>
+        </a>
+      </li>
+    
+      <li class="index__item">
+        <a href="/music-collection/formats/all-media.html">
+          <div class="index__meta repel">
+            <h2 class="index__heading">All Media</h2>
+            <p class="index__secondary"><span class="counter">13</span> releases</p>
+          </div>
+        </a>
+      </li>
+    
+      <li class="index__item">
+        <a href="/music-collection/formats/cassette.html">
+          <div class="index__meta repel">
+            <h2 class="index__heading">Cassette</h2>
+            <p class="index__secondary"><span class="counter">1</span> releases</p>
+          </div>
+        </a>
+      </li>
+    
+      <li class="index__item">
+        <a href="/music-collection/formats/cd.html">
+          <div class="index__meta repel">
+            <h2 class="index__heading">CD</h2>
+            <p class="index__secondary"><span class="counter">3</span> releases</p>
+          </div>
+        </a>
+      </li>
+    
+      <li class="index__item">
+        <a href="/music-collection/formats/box-set.html">
+          <div class="index__meta repel">
+            <h2 class="index__heading">Box Set</h2>
+            <p class="index__secondary"><span class="counter">3</span> releases</p>
+          </div>
+        </a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+      <section class="region">
+        <h2>Now playing</h2>
+        <div class="spotify"></div>
+      </section>
+    </main>
   </body>
 
   <script src="/js/index.js" type="module"></script>

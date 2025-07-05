@@ -1,11 +1,22 @@
 ---
+eleventyNavigation:
+  key: Releases
+  parent: Music Collection
+eleventyComputed:
+  title: "{{ eleventyNavigation.key }} | {{ eleventyNavigation.parent }}"
 layout: base.njk
-permalink: '/music-collection/releases/index.html'
+permalink: "/music-collection/releases/index.html"
 ---
+
+{% include "partials/breadcrumb.njk" %}
+
+<div class="index__page-title ">
+  <h1>Releases</h1>
+</div>
 
 {% set groupedItems = collections.releases | sort(attribute='title') | groupItems('title') %}
 
-<nav aria-label="alphabetical">
+<nav aria-label="alphabetical index" class="alphabetical-index">
   <ul role="list" class="cluster">
     {% for group in groupedItems %}
       <li><a href="#{{ group[0] | lower }}">{{ group[0] }}</a></li>
@@ -14,39 +25,45 @@ permalink: '/music-collection/releases/index.html'
 </nav>
 
 {% for group in groupedItems %}
-  <section>
-    <header>
+  <section class="index">
+    <header class="index__header">
       <h2 id="{{ group[0] | lower }}" class="title">{{ group[0] }}</h2>
     </header>
-    <ul role="list" class="stack">
+    <ul role="list" class="index__list">
       {% for release in group[1] %}
-        <li>
+        <li class="index__item index__item--with-art">
           <a
-            href="/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html"
-            class=""
+            href="/music-collection/releases/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}-{{ release.release_id }}.html"
           >
-            <img
-              {{ 'loading=eager' if loop.index <=4 }}
-              src="../img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
-              sizes="120px"
-              alt="{{ release.title }}"
-              class=""
-            />
-            <div class="index__details">
-              <h3 class="">{{ release.title }}</h3>
-              <p class="">{{ release.artist }} <span class="">({{ release.format }})</span></p>
-              {% if release.favorite %}
-                <div class="badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" class="" aria-hidden="true">
-                    <use xlink:href="#icon-heart"></use>
-                  </svg>
-                  favorite
-                </div>
-              {% endif %}
+            <div class="sidebar">
+              <img
+                class="index__art"
+                loading="lazy"
+                src="../img/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}.jpg"
+                sizes="120px"
+                alt="Album artwork for {{ release.title }}"
+              />
+              <div class="index__meta stack">
+                <h3 class="index__heading">{{ release.title }}</h3>
+                <p class="index__secondary">{{ release.artist }}</p>
+                <p class="index__format">
+                  <strong>{{ release.format }} </strong>
+                  {% for format in release.formats %}
+                    {% if format.name == release.format %}
+                      ({{ format.descriptions | join(", ") }}{% if format.text %}, {{ format.text }}{% endif %})
+                    {% endif %}
+                  {% endfor %}
+                </p>
+                {% if release.favorite %}
+                  <div class="badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" class="" aria-hidden="true">
+                      <use xlink:href="#icon-heart"></use>
+                    </svg>
+                    favorite
+                  </div>
+                {% endif %}
+              </div>
             </div>
-            <svg width="36" height="36" viewBox="-6 -6 36 36" class="" aria-hidden="true">
-              <use xlink:href="#icon-chevron-right"></use>
-            </svg>
           </a>
         </li>
       {% endfor %}

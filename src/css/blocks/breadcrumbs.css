@@ -1,0 +1,11 @@
+.breadcrumbs {
+  margin-block: var(--space-s);
+  padding: var(--space-2xs);
+  background-color: #ccc;
+}
+
+.breadcrumbs ul {
+  --region-space: var(--space-m);
+  padding: 0;
+  margin: 0;
+}

@@ -1,41 +1,68 @@
 ---
+eleventyNavigation:
+  key: {{ formatData.format }}
+  parent: Formats
 eleventyComputed:
   title: "{{ formatData.format }} | Music Collection"
 pagination:
   data: collections.formats
   size: 1
   alias: formatData
-permalink: "/music-collection/formats/{{ formatData.format | slugify }}.html"
+permalink: "/music-collection/formats/{{ formatData.format | accentSlug }}.html"
 ---
 
-<section>
-  <header>
-    <h2 class="title">{{ formatData.releases.length }} release{{ 's' if formatData.releases.length !== 1 }}</h2>
+{% include "partials/breadcrumb.njk" %}
+
+<section class="collection">
+  <div class="collection__page-title">
+    <h1>{{ formatData.format }}</h1>
+  </div>
+  <header class="collection__header">
+    <h2>{{ formatData.releases.length }} release{{ 's' if formatData.releases.length !== 1 }}</h2>
   </header>
-  <ul role="list" class="collection__grid">
+  <ul role="list" class="collection__list grid" data-layout="thirds">
     {% set sortedReleases = formatData.releases | sort(attribute='artist') %}
     {% for release in sortedReleases %}
-    <li>
-      <a href="/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html"
-        class="collection__item surface">
-        <img {{ 'loading=eager' if loop.index <=4 }}
-          src="../img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg" alt="{{ release.title }}"
-          class="collection__image">
-        <div class="collection__details">
-          <h2 class="title">{{ release.title }}</h2>
-          <p class="meta">{{ release.artist }}</p>
-          {% if release.favorite %}
-          <div class="badge"><svg width="14" height="14" viewBox="0 0 24 24" class="icon-stroke" aria-hidden="true">
-            <use xlink:href="#icon-heart"></use>
-          </svg> favorite</div>
-          {% endif %}
-        </div>
-        <svg width="36" height="36" viewBox="-6 -6 36 36" class="collection__action action icon-stroke"
-          aria-hidden="true">
-          <use xlink:href="#icon-chevron-right"></use>
-        </svg>
-      </a>
-    </li>
+      <li class="collection__item">
+        <a
+          href="/music-collection/releases/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}-{{ release.release_id }}.html"
+          class="switcher"
+        >
+          <img
+            {{ 'loading=eager' if loop.index <=4 }}
+            src="../img/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}.jpg"
+            alt="{{ release.title }}"
+            class="collection__img"
+          />
+          <div class="collection__meta stack">
+            <h2 class="collection__release">{{ release.title }}</h2>
+            <p class="collection__artist">{{ release.artist }}</p>
+            <p class="collection__format">
+              {% for format in release.formats %}
+                {% if format.name == release.format %}
+                  {{ release.format }}
+                  - {{ format.descriptions | join(", ") }}{% if format.text %}, {{ format.text }}{% endif %}
+                {% endif %}
+              {% endfor %}
+            </p>
+          </div>
+        </a>
+      </li>
     {% endfor %}
   </ul>
 </section>
+
+<nav aria-label="pagination" class="region repel">
+  {% if pagination.href.previous %}
+    {% set previousFormat = collections.formats[pagination.pageNumber - 1] %}
+    <a href="{{ pagination.href.previous }}" class="icon-link prev">
+      <span>Previous format:</span> {{ previousFormat.format }}
+    </a>
+  {% endif %}
+  {% if pagination.href.next %}
+    {% set nextFormat = collections.formats[pagination.pageNumber + 1] %}
+    <a href="{{ pagination.href.next }}" class="icon-link next">
+      <span>Next format:</span> {{ nextFormat.format }}
+    </a>
+  {% endif %}
+</nav>

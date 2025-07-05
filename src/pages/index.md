@@ -1,4 +1,7 @@
 ---
+eleventyNavigation:
+  key: Home
+  order: 1
 layout: base.njk
 permalink: /index.html
 ---
@@ -14,6 +17,8 @@ So far I've...
 - Created a new [11ty](https://www.11ty.dev/) project and GitHub repo (the page you're on now)
 - Added the Spotify Netlify function back.
 - Reconfigured the folder structure
+- Added CUBE CSS and Utopia
+- Added a [music collection](/music-collection)
 
 My goal here is to design and build this site in the open using only ideas, sketches and the browser. No Figma, Penpot etc.
 

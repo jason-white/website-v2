@@ -7,7 +7,20 @@
   </head>
 
   <body>
-    <div class="wrapper">
+    <header class="wrapper">
+      <nav aria-label="main" class="site-nav">
+        <ul role="list" class="cluster">
+          
+            <li>
+              <a href="/" aria-current="page">Home</a>
+            </li>
+            <li>
+              <a href="/music-collection/">Music Collection</a>
+            </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="wrapper">
       <h1>Hello 👋</h1>
 <p>Thanks for stopping by. There isn't much to see at the moment, but check back periodically.</p>
 <p>So far I've...</p>
@@ -17,14 +30,18 @@
 <li>Created a new <a href="https://www.11ty.dev/">11ty</a> project and GitHub repo (the page you're on now)</li>
 <li>Added the Spotify Netlify function back.</li>
 <li>Reconfigured the folder structure</li>
+<li>Added CUBE CSS and Utopia</li>
+<li>Added a <a href="/music-collection">music collection</a></li>
 </ul>
 <p>My goal here is to design and build this site in the open using only ideas, sketches and the browser. No Figma, Penpot etc.</p>
 <p>-- Jason</p>
 
 
-      <h2>Now playing</h2>
-      <div class="spotify"></div>
-    </div>
+      <section class="region">
+        <h2>Now playing</h2>
+        <div class="spotify"></div>
+      </section>
+    </main>
   </body>
 
   <script src="/js/index.js" type="module"></script>

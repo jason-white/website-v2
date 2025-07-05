@@ -1,3 +1,15 @@
+.filter {
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+}
+
 /* Modern reset: https://piccalil.li/blog/a-more-modern-css-reset/ */
 
 /* Box sizing rules */
@@ -107,7 +119,7 @@ textarea:not([rows]) {
 :root {
   --color-dark: #03202D;
   --color-light: #f4f4f4;
-  --color-primary: #A40F00;
+  --color-primary: #ffba06;
   --color-primary-dark: #7C0E01;
   --color-primary-dark-red: #111;
   --color-secondary: #2F4446;
@@ -177,25 +189,8 @@ body {
   margin: 0;
 }
 
-.site {
-  position: relative;
-  display: grid;
-  grid-template-rows: min-content 1fr min-content;
-  grid-template-areas:
-    'header'
-    'main'
-    'footer';
-  height: 100%;
-}
-
-@media (width > 960px) {
-  .site {
-    grid-template-columns: min-content 1fr;
-    grid-template-rows: 1fr min-content;
-    grid-template-areas:
-      'header main'
-      'footer footer';
-  }
+a {
+  color: var(--color-dark);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -204,10 +199,16 @@ body {
   }
 }
 
-.current-party {
-  /* background-image: url('../assets/img/mock-bg.jpg'); */
-  /* background-size: cover; */
-  /* background-repeat: no-repeat; */
+.breadcrumbs {
+  margin-block: var(--space-s);
+  padding: var(--space-2xs);
+  background-color: #ccc;
+}
+
+.breadcrumbs ul {
+  --region-space: var(--space-m);
+  padding: 0;
+  margin: 0;
 }
 
 .footer {
@@ -226,19 +227,269 @@ body {
   color: var(--color-light);
 }
 
-.nav {
-  padding: var(--gutter);
-  position: sticky;
-  top: 0;
+/* Styles for all index pages */
+
+.alphabetical-index ul {
+  --gutter: var(--space-m);
+  padding: 0;
+  font-size: var(--size-step-2);
+  font-weight: 600;
 }
 
-.nav ul {
-  list-style-type: none;
+.index__page-title {
+  font-size: var(--size-step-4);
+  margin-block: var(--space-l);
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  padding-inline: var(--space-3xs);
+  letter-spacing: -2px;
+  line-height: var(--leading-flat);
+}
+
+.index__header {
+  background-color: var(--color-dark);
+}
+
+.index__header h2 {
+  position: relative;
+  color: var(--color-light);
+  padding: var(--space-xs);
+  margin: 0;
+  border-block: 1px solid var(--color-dark);
+}
+
+.index__list {
   padding: 0;
+  margin: 0;
+}
+
+.index__item a {
+  display: block;
+  padding-block: var(--space-s);
+  padding-inline: var(--space-3xs);
+  text-decoration: none;
+}
+
+.index__item a:hover {
+  transition: 0.1s cubic-bezier(0.33, 1, 0.68, 1);
+  background-color: var(--color-primary);
+}
+
+.index__item + .index__item {
+  border-block-start: 1px solid var(--color-dark);
+}
+
+.index__art {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  display: block;
+  padding: var(--space-2xs);
+  border-inline-end: 1px solid var(--color-dark);
+}
+
+.index__meta * {
+  --space: var(--space-3xs);
+  margin: 0;
+}
+
+.index__heading {
+  font-size: var(--size-step-2);
+}
+
+.index__secondary {
+  text-transform: uppercase;
+}
+
+.index__format {
+  font-family: monospace;
+  font-size: var(--size-step-00);
+}
+
+.index__item--with-art {
+  --sidebar-target-width: 200px;
+  --gutter: 0;
+}
+
+.index__item--with-art a {
+  padding: 0;
+}
+
+.index__item--with-art .index__meta {
+  padding: var(--space-2xs);
+}
+
+/* Collection grid styles */
+
+.collection {
+  --region-space: var(--space-m);
+}
+
+.collection__page-title {
+  font-size: var(--size-step-4);
+  margin-block: var(--space-l);
+  padding-inline: var(--space-3xs);
+  letter-spacing: -2px;
+  line-height: var(--leading-flat);
+}
+
+.collection__header {
+  padding: var(--space-xs);
+  background-color: var(--color-dark);
+  margin-block-end: var(--gutter);
+  color: var(--color-light);
+}
+
+.collection__header h2,
+.collection__header p {
+  margin: 0;
+}
+
+.collection__list {
+  margin: 0;
+  padding: 0;
+}
+
+.collection__item {
+  --gutter: 0;
+}
+
+.collection__item a {
+  text-decoration: none;
+}
+
+.collection__item:hover {
+  background-color: var(--color-primary);
+}
+
+.collection__img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  display: block;
+}
+
+.collection__meta {
+  --space: var(--space-3xs);
+  padding: var(--space-3xs);
+}
+
+.collection__meta > * + * {
+  border-block-start: 1px solid var(--color-dark);
+  padding-block-start: var(--space-3xs);
+}
+
+.collection__release {
+  font-size: var(--size-step-2);
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.collection__format {
+  font-family: monospace;
+}
+
+.collection__description {
+  font-family: monospace;
+  font-size: var(--size-step-00);
+}
+
+.collection__pagination a {
+  max-width: 30ch;
+}
+
+/* Release page styles */
+
+.release {
+  --space: var(--space-l);
+}
+
+.release > div {
+  margin-block-end: var(--gutter);
+}
+
+.release h2 {
+  margin-block: 0 var(--space-xs);
+}
+
+.release__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.release__info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  font-family: monospace;
+  /* border: 1px solid var(--color-dark); */
+  border-block-end: none;
+  margin: 0;
+}
+
+.release__info dt,
+.release__info dd {
+  padding: var(--space-2xs);
+  border-block-start: 1px solid var(--color-dark);
+}
+
+.release__info dt:first-child,
+.release__info dd:nth-child(2) {
+  border-block-start: none;
+}
+
+.release__info dd {
+  margin: 0;
+  border-inline-start: 1px solid var(--color-dark);
+}
+
+.release__tracklist {
+  --space: var(--space-3xs);
+  --gutter: 0;
+  font-family: monospace;
+}
+
+.release__tracklist ol {
+  padding: 0;
+  margin: 0;
+}
+
+.release__track {
+  padding: var(--space-3xs);
+}
+
+.release__track-title {
+  margin-inline-end: auto;
+}
+
+.release__track:nth-of-type(odd) {
+  background-color: #ddd;
+}
+
+.release__notes {
+  position: relative;
+}
+
+.release__notes h2 {
+  display: inline-block;
+}
+
+.release__notes p {
+  margin: 0;
 }
 
 .prose {
   --flow-space: var(--space-m);
+}
+
+.site-nav {
+  padding-block: var(--space-2xs);
+  border-block-end: 2px solid var(--color-dark);
+}
+
+.site-nav ul {
+  padding: 0;
+  margin: 0;
 }
 
 .center {
@@ -489,4 +740,12 @@ Info: https://piccalil.li/quick-tip/visually-hidden/
 
 .table {
   display: table;
+}
+
+.grid {
+  display: grid;
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }

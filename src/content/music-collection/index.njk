@@ -1,211 +1,215 @@
 ---
+eleventyNavigation:
+  key: Music Collection
+  order: 3
 eleventyComputed:
   title: '{{ eleventyNavigation.key }}'
 permalink: '/music-collection/index.html'
 ---
 
-<details class="surface" open>
-  <summary>
-    <h2 class="title">Track Record</h2>
-  </summary>
-  <div class="stats__grid">
-    {% set sortedArtists = collections.artists | sort(true, false, attribute='releases.length') %}
-    <table class="stats__table">
-      <caption>
-        Top 3 Artists
-      </caption>
-      <thead class="visually-hidden">
-        <tr>
-          <th scope="col">Artist</th>
-          <th scope="col">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for artistData in sortedArtists %}
-          <tr>
-            <th scope="row">
-              <a href="/music-collection/artists/{{ artistData.artist | slugify }}.html"
-                >{{ artistData.artist }}</a
-              >
-            </th>
-            <td><span class="counter">{{ artistData.releases.length }}</span></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+{% include "partials/breadcrumb.njk" %}
 
-    {% set genreCounts = {} %}
-    {% for genreItem in collections.genres %}
-      {% set genreCounts = genreCounts | setAttribute(genreItem.genre, genreItem.releases.length) %}
-    {% endfor %}
-    {% set sortedGenres = genreCounts | dictsort | sort(true, false, attribute='1') | slice(0, 3) %}
-    <table class="stats__table">
-      <caption>
-        Top 3 Genres
-      </caption>
-      <thead class="visually-hidden">
-        <tr>
-          <th scope="col">Genre</th>
-          <th scope="col">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for genre, count in sortedGenres %}
-          <tr>
-            <th scope="row"><a href="/music-collection/genres/{{ genre | slugify }}.html">{{ genre }}</a></th>
-            <td><span class="counter">{{ count }}</span></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+<section class="region">
+  <p>
+    This is almost my entire physical music collection. I still have more records, some CDs, and cassettes to add to Discogs. <em>Massive</em> shoutout to <a href="https://damianwalsh.co.uk/">Damian Walsh</a> who did all of the heavy lifting here. You need to read <a href="https://damianwalsh.co.uk/posts/creating-connections-with-music-and-technology/">his post</a> about why he created it. His collection has quite a few more features, it's built extremely well and is beautifully designed. This feels like theft because it is, really. But, I can't imagine it being setup any other way.</p>
 
-    {% set sortedYears = collections.releaseYears | sort(true, false, attribute='releases.length') | slice(0, 3) %}
-    <table class="stats__table">
-      <caption>
-        Top 3 Years
-      </caption>
-      <thead class="visually-hidden">
-        <tr>
-          <th scope="col">Year</th>
-          <th scope="col">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for yearData in sortedYears %}
-          <tr>
-            <th scope="row">
-              <a href="/music-collection/years/{{ yearData.year }}.html">{{ yearData.year }}</a>
-            </th>
-            <td><span class="counter">{{ yearData.releases.length }}</span></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    {% set sortedFormats = collections.formats | sort(true, false, attribute='releases.length') | slice(0, 3) %}
-    <table class="stats__table">
-      <caption>
-        Top 3 Formats
-      </caption>
-      <thead class="visually-hidden">
-        <tr>
-          <th scope="col">Format</th>
-          <th scope="col">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for formatData in sortedFormats %}
-          <tr>
-            <th scope="row">
-              <a href="/music-collection/formats/{{ formatData.format | slugify }}.html"
-                >{{ formatData.format }}</a
-              >
-            </th>
-            <td><span class="counter">{{ formatData.releases.length }}</span></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</details>
-
-{% set favoriteCount = 0 %}
-{% for release in collections.releases %}
-  {% if release.favorite %}
-    {% set favoriteCount = favoriteCount + 1 %}
-  {% endif %}
-{% endfor %}
-
-<section>
-  <header class="row">
-    <h2 class="title">favorites</h2>
-    <p class="meta">
-      <span class="counter">{{ favoriteCount }}</span> release{{ 's' if favoriteCount !== 1 }}
-    </p>
-  </header>
-  <ul role="list" class="cluster">
-    {% for release in collections.releases %}
-      {% if release.favorite %}
-        <li>
-          <a
-            href="/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html"
-            class="collection__item surface"
-          >
-            <img
-              {{ 'loading=eager' if loop.index <= 4 }}
-              src="img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
-              sizes="(min-width: 1740px) 280px, (min-width: 1460px) 16.92vw, (min-width: 1380px) calc(33.33vw - 157px), (min-width: 1180px) calc(22.78vw - 30px), (min-width: 880px) calc(30.36vw - 26px), (min-width: 780px) calc(46.25vw - 27px), (min-width: 580px) calc(11.67vw - 15px), calc(22.31vw - 7px)"
-              alt="{{ release.title }}"
-              class=""
-            />
-            <div class="">
-              <h2 class="">{{ release.title }}</h2>
-              <p class="">{{ release.artist }}</p>
-              <div class="">
-                <svg width="14" height="14" viewBox="0 0 24 24" class="icon-stroke" aria-hidden="true">
-                  <use xlink:href="#icon-heart"></use>
-                </svg>
-                favorite
-              </div>
-            </div>
-            <svg width="36" height="36" viewBox="-6 -6 36 36" class="" aria-hidden="true">
-              <use xlink:href="#icon-chevron-right"></use>
-            </svg>
-          </a>
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
+  <p>I did make a few adjustments here and there to display records the way I wanted. Mostly to handle the duplicates. I'm a bit of a collector and like to have specific pressings of some albums.
+  </p>
+  <p>
+    I learned a ton about Eleventy in the process. It's not 100% complete, and when I get the blog setup I will write more about it. In the meantime, poke around. 
+  </p>
 </section>
 
-<hr />
-
+<!-- <details class="surface" open> -->
+<!--   <summary> -->
+<!--     <h2 class="title">Track Record</h2> -->
+<!--   </summary> -->
+<!--   <div class="stats__grid"> -->
+<!--     {% set sortedArtists = collections.artists | sort(true, false, attribute='releases.length') | slice(0, 3) %} -->
+<!--     <table class="stats__table"> -->
+<!--       <caption> -->
+<!--         Top 3 Artists -->
+<!--       </caption> -->
+<!--       <thead class="visually-hidden"> -->
+<!--         <tr> -->
+<!--           <th scope="col">Artist</th> -->
+<!--           <th scope="col">Total</th> -->
+<!--         </tr> -->
+<!--       </thead> -->
+<!--       <tbody> -->
+<!--         {% for artistData in sortedArtists %} -->
+<!--           <tr> -->
+<!--             <th scope="row"> -->
+<!--               <a href="/music-collection/artists/{{ artistData.artist | accentSlug }}.html" -->
+<!--                 >{{ artistData.artist }}</a -->
+<!--               > -->
+<!--             </th> -->
+<!--             <td><span class="counter">{{ artistData.releases.length }}</span></td> -->
+<!--           </tr> -->
+<!--         {% endfor %} -->
+<!--       </tbody> -->
+<!--     </table> -->
+<!---->
+<!--     {% set genreCounts = {} %} -->
+<!--     {% for genreItem in collections.genres %} -->
+<!--       {% set genreCounts = genreCounts | setAttribute(genreItem.genre, genreItem.releases.length) %} -->
+<!--     {% endfor %} -->
+<!--     {% set sortedGenres = genreCounts | dictsort | sort(true, false, attribute='1') | slice(0, 3) %} -->
+<!--     <table class="stats__table"> -->
+<!--       <caption> -->
+<!--         Top 3 Genres -->
+<!--       </caption> -->
+<!--       <thead class="visually-hidden"> -->
+<!--         <tr> -->
+<!--           <th scope="col">Genre</th> -->
+<!--           <th scope="col">Total</th> -->
+<!--         </tr> -->
+<!--       </thead> -->
+<!--       <tbody> -->
+<!--         {% for genre, count in sortedGenres %} -->
+<!--           <tr> -->
+<!--             <th scope="row"> -->
+<!--               <a href="/music-collection/genres/{{ genre | accentSlug }}.html">{{ genre }}</a> -->
+<!--             </th> -->
+<!--             <td><span class="counter">{{ count }}</span></td> -->
+<!--           </tr> -->
+<!--         {% endfor %} -->
+<!--       </tbody> -->
+<!--     </table> -->
+<!---->
+<!--     {% set sortedYears = collections.releaseYears | sort(true, false, attribute='releases.length') | slice(0, 3) %} -->
+<!--     <table class="stats__table"> -->
+<!--       <caption> -->
+<!--         Top 3 Years -->
+<!--       </caption> -->
+<!--       <thead class="visually-hidden"> -->
+<!--         <tr> -->
+<!--           <th scope="col">Year</th> -->
+<!--           <th scope="col">Total</th> -->
+<!--         </tr> -->
+<!--       </thead> -->
+<!--       <tbody> -->
+<!--         {% for yearData in sortedYears %} -->
+<!--           <tr> -->
+<!--             <th scope="row"> -->
+<!--               <a href="/music-collection/years/{{ yearData.year }}.html">{{ yearData.year }}</a> -->
+<!--             </th> -->
+<!--             <td><span class="counter">{{ yearData.releases.length }}</span></td> -->
+<!--           </tr> -->
+<!--         {% endfor %} -->
+<!--       </tbody> -->
+<!--     </table> -->
+<!---->
+<!--     {% set sortedFormats = collections.formats | sort(true, false, attribute='releases.length') | slice(0, 3) %} -->
+<!--     <table class="stats__table"> -->
+<!--       <caption> -->
+<!--         Top 3 Formats -->
+<!--       </caption> -->
+<!--       <thead class="visually-hidden"> -->
+<!--         <tr> -->
+<!--           <th scope="col">Format</th> -->
+<!--           <th scope="col">Total</th> -->
+<!--         </tr> -->
+<!--       </thead> -->
+<!--       <tbody> -->
+<!--         {% for formatData in sortedFormats %} -->
+<!--           <tr> -->
+<!--             <th scope="row"> -->
+<!--               <a href="/music-collection/formats/{{ formatData.format | accentSlug }}.html" -->
+<!--                 >{{ formatData.format }}</a -->
+<!--               > -->
+<!--             </th> -->
+<!--             <td><span class="counter">{{ formatData.releases.length }}</span></td> -->
+<!--           </tr> -->
+<!--         {% endfor %} -->
+<!--       </tbody> -->
+<!--     </table> -->
+<!--   </div> -->
+<!-- </details> -->
+<!---->
+<!-- {% set favoriteCount = 0 %} -->
+<!-- {% for release in collections.releases %} -->
+<!--   {% if release.favorite %} -->
+<!--     {% set favoriteCount = favoriteCount + 1 %} -->
+<!--   {% endif %} -->
+<!-- {% endfor %} -->
+<!---->
+<!-- <section> -->
+<!--   <header class=""> -->
+<!--     <h2 class="title">favorites</h2> -->
+<!--     <p class="meta"> -->
+<!--       <span class="counter">{{ favoriteCount }}</span> release{{ 's' if favoriteCount !== 1 }} -->
+<!--     </p> -->
+<!--   </header> -->
+<!--   <ul role="list" class="cluster"> -->
+<!--     {% for release in collections.releases %} -->
+<!--       {% if release.favorite %} -->
+<!--         <li> -->
+<!--           <a -->
+<!--             href="/music-collection/releases/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}-{{ release.format | accentSlug }}.html" -->
+<!--             class="collection__item surface" -->
+<!--           > -->
+<!--             <img -->
+<!--               class="" -->
+<!--               {{ 'loading=eager' if loop.index <= 4 }} -->
+<!--               src="img/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}.jpg" -->
+<!--               sizes="(min-width: 1740px) 280px, (min-width: 1460px) 16.92vw, (min-width: 1380px) calc(33.33vw - 157px), (min-width: 1180px) calc(22.78vw - 30px), (min-width: 880px) calc(30.36vw - 26px), (min-width: 780px) calc(46.25vw - 27px), (min-width: 580px) calc(11.67vw - 15px), calc(22.31vw - 7px)" -->
+<!--               alt="{{ release.title }}" -->
+<!--             /> -->
+<!--             <div class=""> -->
+<!--               <h2 class="">{{ release.title }}</h2> -->
+<!--               <p class="">{{ release.artist }}</p> -->
+<!--               <div class=""> -->
+<!--                 <svg width="14" height="14" viewBox="0 0 24 24" class="icon-stroke" aria-hidden="true"> -->
+<!--                   <use xlink:href="#icon-heart"></use> -->
+<!--                 </svg> -->
+<!--                 favorite -->
+<!--               </div> -->
+<!--             </div> -->
+<!--             <svg width="36" height="36" viewBox="-6 -6 36 36" class="" aria-hidden="true"> -->
+<!--               <use xlink:href="#icon-chevron-right"></use> -->
+<!--             </svg> -->
+<!--           </a> -->
+<!--         </li> -->
+<!--       {% endif %} -->
+<!--     {% endfor %} -->
+<!--   </ul> -->
+<!-- </section> -->
+<!---->
 {% for formatData in sortedFormats %}
-  <section>
-    <header class="row">
+  <section class="collection region">
+    <header class="collection__header repel">
       <h2 class="title">{{ formatData.format }}</h2>
       <p class="meta">
         <span class="counter">{{ formatData.releases.length }}</span>
         release{{ 's' if formatData.releases.length !== 1 }}
       </p>
     </header>
-    <ul role="list" class="collection__grid">
+    <ul role="list" class="collection__list grid" data-layout="thirds">
       {% set sortedReleases = formatData.releases | sort(attribute='artist') %}
-      {% for release in sortedReleases | slice(0, 10) %}
-        <li>
+      {% for release in sortedReleases | slice(0, 9) %}
+        <li class="collection__item">
           <a
-            href="/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html"
-            class="collection__item surface"
+            href="/music-collection/releases/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}-{{ release.release_id }}.html"
+            class="switcher"
           >
             <img
-              {{ 'loading=eager' if loop.index <= 4 }}
-              src="img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
+              src="img/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}.jpg"
               sizes="(min-width: 1740px) 280px, (min-width: 1460px) 16.92vw, (min-width: 1380px) calc(33.33vw - 157px), (min-width: 1180px) calc(22.78vw - 30px), (min-width: 880px) calc(30.36vw - 26px), (min-width: 780px) calc(46.25vw - 27px), (min-width: 580px) calc(11.67vw - 15px), calc(22.31vw - 7px)"
               alt="{{ release.title }}"
-              class=""
+              class="collection__img"
             />
-            <div class="">
-              <h2 class="">{{ release.title }}</h2>
-              <p class="">{{ release.artist }}</p>
-              {% if release.favorite %}
-                <div class="">
-                  <svg width="16" height="16" viewBox="0 0 24 24" class="icon-stroke" aria-hidden="true">
-                    <use xlink:href="#icon-heart"></use>
-                  </svg>
-                  favorite
-                </div>
-              {% endif %}
+            <div class="collection__meta stack">
+              <h2 class="collection__release">{{ release.title }}</h2>
+              <p class="collection__artist">{{ release.artist }}</p>
             </div>
-            <svg width="36" height="36" viewBox="-6 -6 36 36" class="" aria-hidden="true">
-              <use xlink:href="#icon-chevron-right"></use>
-            </svg>
           </a>
         </li>
       {% endfor %}
     </ul>
     {% if formatData.releases.length > 10 %}
       <p>
-        <a href="/music-collection/formats/{{ formatData.format | slugify }}.html" class="icon-link"
+        <a href="/music-collection/formats/{{ formatData.format | accentSlug }}.html" class="icon-link"
           >View all {{ formatData.releases.length }} {{ formatData.format }} releases</a
         >
       </p>

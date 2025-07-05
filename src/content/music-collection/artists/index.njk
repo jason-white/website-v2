@@ -1,13 +1,22 @@
 ---
+eleventyNavigation:
+  key: Artists
+  parent: Music Collection
 eleventyComputed:
   title: "{{ eleventyNavigation.key }} | {{ eleventyNavigation.parent }}"
 permalink: "/music-collection/artists/index.html"
 ---
 
+{% include "partials/breadcrumb.njk" %}
+
+<div class="index__page-title">
+  <h1>Artists</h1>
+</div>
+
 {% set groupedItems = collections.artists | sort(attribute='artist') | groupItems('artist') %}
 
-<nav aria-label="alphabetical">
-  <ul role="list">
+<nav aria-label="alphabetical" class="alphabetical-index">
+  <ul role="list" class="cluster">
     {% for group in groupedItems %}
       <li><a href="#{{ group[0] | lower }}">{{ group[0] }}</a></li>
     {% endfor %}
@@ -15,24 +24,24 @@ permalink: "/music-collection/artists/index.html"
 </nav>
 
 {% for group in groupedItems %}
-<section>
-  <header>
-    <h2 id="{{ group[0] | lower }}" class="title">{{ group[0] }}</h2>
-  </header>
-  <ul role="list" class="index__list">
-    {% for artist in group[1] %}
-    <li>
-      <a href="/music-collection/artists/{{ artist.artist | slugify }}.html" class="index__item surface">
-        <div class="index__details">
-          <h3 class="title">{{ artist.artist }}</h3>
-          <p class="meta"><span class="counter">{{ artist.releases.length }}</span> release{{ 's' if artist.releases.length !== 1 }}</p>
-        </div>
-        <svg width="36" height="36" viewBox="-6 -6 36 36" class="index__action action icon-stroke" aria-hidden="true">
-          <use xlink:href="#icon-chevron-right"></use>
-        </svg>
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
+  <section class="index">
+    <header class="index__header">
+      <h2 id="{{ group[0] | lower }}" class="title">{{ group[0] }}</h2>
+    </header>
+    <ul role="list" class="index__list">
+      {% for artist in group[1] %}
+        <li class="index__item">
+          <a href="/music-collection/artists/{{ artist.artist | accentSlug }}.html">
+            <div class="index__meta repel">
+              <h3 class="index__heading">{{ artist.artist }}</h3>
+              <p class="index__secondary">
+                <span class="counter">{{ artist.releases.length }}</span>
+                release{{ 's' if artist.releases.length !== 1 }}
+              </p>
+            </div>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
 {% endfor %}

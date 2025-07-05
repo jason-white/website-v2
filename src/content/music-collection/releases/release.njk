@@ -1,113 +1,189 @@
 ---
+eleventyNavigation:
+  key: "{{ release.title }}"
+  parent: Releases
 eleventyComputed:
-  title: '{{ release.title }} - {{ release.artist }} | Music Collection'
+  title: "{{ release.title }} - {{ release.artist }} | Music Collection"
 pagination:
   data: collections.releases
   size: 1
   alias: release
-permalink: '/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html'
+permalink: "/music-collection/releases/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}-{{ release.release_id | accentSlug }}.html"
 ---
 
-<div class="switcher">
-  <img
-    loading="eager"
-    src="../img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
-    sizes="(min-width: 1720px) 403px, (min-width: 1380px) calc(26.56vw - 49px), (min-width: 780px) calc(30.69vw - 15px), (min-width: 400px) 83.61vw, calc(26.25vw + 220px)"
-    alt="{{ release.title }}"
-    class="detail__image"
-  />
+{% include "partials/breadcrumb.njk" %}
 
-  <dl class="">
-    <dt>Artist</dt>
-    <dd><a href="/music-collection/artists/{{ release.artist | slugify }}.html">{{ release.artist }}</a></dd>
-    {% if release.released or release.first_released %}
-      <dt>Release date</dt>
-      <dd>
-        {% if release.released %}
-          {% if release.first_released and release.first_released !== release.released %}
-            {{ release.released | readableDate }}
-            (first released:
-            <a href="/music-collection/years/{{ release.first_released | extractYear }}.html"
-              >{{ release.first_released | readableDate }}</a
-            >)
-          {% else %}
-            <a href="/music-collection/years/{{ release.released | extractYear }}.html"
-              >{{ release.released | readableDate }}</a
-            >
-          {% endif %}
-        {% else %}
-          <a href="/music-collection/years/{{ release.first_released | extractYear }}.html"
-            >{{ release.first_released | readableDate }}</a
-          >
-        {% endif %}
-      </dd>
-    {% endif %}
-    <dt>Format</dt>
-    <dd>
-      <a href="/music-collection/formats/{{ release.format | slugify }}.html">{{ release.format }}</a>
-      {% for format in release.formats %}
-        {% if format.name == release.format %}
-          ({{ format.descriptions | join(", ") }})
-        {% endif %}
-      {% endfor %}
-    </dd>
-    {% if release.genres %}
-      <dt>Genres</dt>
-      <dd>
-        {% for genre in release.genres %}
-          <a href="/music-collection/genres/{{ genre | slugify }}.html">{{ genre }}</a
-          >{% if not loop.last %},{% endif %}
-        {% endfor %}
-      </dd>
-    {% endif %}
-  </dl>
-  <div class="detail__footer">
-    {% if release.favorite %}
-      <div class="">
-        <svg width="14" height="14" viewBox="0 0 24 24" class="icon-stroke" aria-hidden="true">
-          <use xlink:href="#icon-heart"></use>
-        </svg>
-        favorite
-      </div>
-    {% endif %}
-    <a href="{{ release.uri }}"><small>View on Discogs</small></a>
-  </div>
+<div class="release-title region">
+  <h1>{{ release.title }}</h1>
 </div>
 
-{% if release.tracklist %}
-  <section class="surface">
-    <header>
-      <h2 class="">Tracklist</h2>
-    </header>
-    <ol role="list" class="tracklist">
-      {% for track in release.tracklist %}
-        <li class="">
-          <span class="">{{ track.title }}</span>
-          <div class="">
-            {% set trackVideo = release.videos | findVideoByTrack(track.title) %}
-            {% if trackVideo %}
-              <a href="{{ trackVideo.url }}" class="icon-link">
-                <svg width="24" height="24" viewBox="-8 -6 36 36" class="" aria-hidden="true">
-                  <use xlink:href="#icon-play"></use>
-                </svg>
-                <span class="visually-hidden">Watch video</span>
-              </a>
-            {% endif %}
-            {% if track.duration %}
-              <span class="">({{ track.duration }})</span>
-            {% endif %}
-          </div>
-        </li>
-      {% endfor %}
-    </ol>
-  </section>
-{% endif %}
+<div class="release stack">
+  <section class="switcher">
+    <img
+      loading="eager"
+      src="../img/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}.jpg"
+      sizes="(min-width: 1720px) 403px, (min-width: 1380px) calc(26.56vw - 49px), (min-width: 780px) calc(30.69vw - 15px), (min-width: 400px) 83.61vw, calc(26.25vw + 220px)"
+      alt="{{ release.title }}"
+      class="release__img"
+    />
 
-{% if release.notes %}
-  <details class="surface">
-    <summary>
-      <h2 class="title">Notes</h2>
-    </summary>
-    <p>{{ release.notes }}</p>
-  </details>
-{% endif %}
+    <div class="stack">
+      <dl class="release__info">
+        <dt>Artist</dt>
+        <dd>
+          <a href="/music-collection/artists/{{ release.artist | accentSlug }}.html">{{ release.artist }}</a>
+        </dd>
+        {% if release.released or release.first_released %}
+          <dt>Release date</dt>
+          <dd>
+            {% if release.released %}
+              {% if release.first_released and release.first_released !== release.released %}
+                {{ release.released | readableDate }}
+                (first released:
+                <a href="/music-collection/years/{{ release.first_released | extractYear }}.html"
+                  >{{ release.first_released | readableDate }}</a
+                >)
+              {% else %}
+                <a href="/music-collection/years/{{ release.released | extractYear }}.html"
+                  >{{ release.released | readableDate }}</a
+                >
+              {% endif %}
+            {% else %}
+              <a href="/music-collection/years/{{ release.first_released | extractYear }}.html"
+                >{{ release.first_released | readableDate }}</a
+              >
+            {% endif %}
+          </dd>
+        {% endif %}
+        <dt>Format</dt>
+        <dd>
+          <a href="/music-collection/formats/{{ release.format | accentSlug }}.html">{{ release.format }}</a>
+        </dd>
+        <dt>Details</dt>
+        <dd>
+          {% for format in release.formats %}
+            {% if format.name == release.format %}
+              {{ format.descriptions | join(", ") }}{% if format.text %}, {{ format.text }}{% endif %}
+            {% endif %}
+          {% endfor %}
+        </dd>
+        {% if release.genres %}
+          <dt>Genres</dt>
+          <dd>
+            {% for genre in release.genres %}
+              <a href="/music-collection/genres/{{ genre | accentSlug }}.html">{{ genre }}</a
+              >{% if not loop.last %},{% endif %}
+            {% endfor %}
+          </dd>
+        {% endif %}
+      </dl>
+      <a href="{{ release.uri }}">View on Discogs</a>
+    </div>
+  </section>
+
+  {% if release.tracklist %}
+    <section>
+      <header>
+        <h2 class="">Tracklist</h2>
+      </header>
+      <div class="release__tracklist">
+        <ol role="list" class="stack">
+          {% for track in release.tracklist %}
+            <li class="release__track repel">
+              <span class="release__track-title">{{ track.title }}</span>
+              {% set trackVideo = release.videos | findVideoByTrack(track.title) %}
+              {% if trackVideo %}
+                <div>
+                  <a href="{{ trackVideo.url }}" class="icon-link">
+                    <!-- <svg width="24" height="24" viewBox="-8 -6 36 36" class="" aria-hidden="true"> -->
+                    <!--   <use xlink:href="#icon-play"></use> -->
+                    <!-- </svg> -->
+                    <span>Watch video</span>
+                  </a>
+                </div>
+              {% endif %}
+              {% if track.duration %}
+                <span class="">({{ track.duration }})</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if release.notes %}
+    <details class="release__notes">
+      <summary>
+        <h2 class="title">Notes</h2>
+      </summary>
+      <p>{{ release.notes }}</p>
+    </details>
+  {% endif %}
+
+  {% set otherReleases = collections.releases | otherItemsByCreator(release, "artist", "title", "release_id") %}
+  {% if otherReleases.length > 0 %}
+    <section>
+      <header class="collection__heading">
+        <h2>
+          Other releases by
+          <a href="/music-collection/artists/{{ release.artist | accentSlug }}.html">{{ release.artist }}</a>
+          in the collection
+        </h2>
+      </header>
+      <ul role="list" class="collection__list grid" data-layout="thirds">
+        {% for otherRelease in otherReleases %}
+          <li class="collection__item">
+            <a
+              href="/music-collection/releases/{{ otherRelease.title | accentSlug }}-{{ otherRelease.artist | accentSlug }}-{{ otherRelease.release_id }}.html"
+              class="switcher"
+            >
+              <img
+                src="../img/{{ otherRelease.title | accentSlug }}-{{ otherRelease.artist | accentSlug }}.jpg"
+                sizes="(min-width: 1740px) 280px, (min-width: 1460px) 16.92vw, (min-width: 1380px) calc(33.33vw - 157px), (min-width: 1180px) calc(22.78vw - 30px), (min-width: 880px) calc(30.36vw - 26px), (min-width: 780px) calc(46.25vw - 27px), (min-width: 580px) calc(11.67vw - 15px), (min-width: 400px) calc(23.13vw - 12px), calc(7.5vw + 48px)"
+                alt="{{ otherRelease.title }}"
+                class="collection__img"
+              />
+              <div class="collection__meta stack">
+                <h3 class="collection__release">{{ otherRelease.title }}</h3>
+                <p class="collection__description">
+                  {% for format in otherRelease.formats %}
+                    {% if format.name == otherRelease.format %}
+                      <strong>{{ otherRelease.format }}</strong>
+                      -
+                      {{ format.descriptions | join(", ") }}{% if format.text %}, {{ format.text }}{% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </p>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  <nav aria-label="pagination">
+    <div class="collection__pagination repel">
+      {% if pagination.href.previous %}
+        {% set previousRelease = collections.releases[pagination.pageNumber - 1] %}
+        <a
+          href="/music-collection/releases/{{ previousRelease.title | accentSlug }}-{{ previousRelease.artist | accentSlug }}-{{ previousRelease.release_id }}.html"
+          class="icon-link prev"
+        >
+          <span class="visually-hidden">Previous:</span> {{ previousRelease.title }} by
+          {{ previousRelease.artist }}
+        </a>
+      {% endif %}
+      {% if pagination.href.next %}
+        {% set nextRelease = collections.releases[pagination.pageNumber + 1] %}
+        <a
+          href="/music-collection/releases/{{ nextRelease.title | accentSlug }}-{{ nextRelease.artist | accentSlug }}-{{ nextRelease.release_id }}.html"
+          class="icon-link next"
+        >
+          <span class="visually-hidden">Next:</span> {{ nextRelease.title }} by {{ nextRelease.artist }}
+        </a>
+      {% endif %}
+    </div>
+  </nav>
+</div>

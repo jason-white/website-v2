@@ -1,18 +1,16 @@
 import pluginFilters from './src/_config/filters.js';
+import pluginNavigation from '@11ty/eleventy-navigation';
 import {eleventyImageTransformPlugin} from '@11ty/eleventy-img';
 
 export default async function (eleventyConfig) {
   eleventyConfig.addWatchTarget('content/**/*.{svg,webp,png,jpg,jpeg}');
+  eleventyConfig.addWatchTarget('src/css');
 
   eleventyConfig.addPassthroughCopy('./src/js');
   eleventyConfig.addPassthroughCopy('./src/functions');
 
   eleventyConfig.addPassthroughCopy({
     'content/music-collection/img': 'img'
-  });
-
-  eleventyConfig.addBundle('css', {
-    toFileDirectory: 'dist'
   });
 
   eleventyConfig.addCollection('releases', function (collectionApi) {
@@ -130,6 +128,7 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addPlugin(pluginFilters);
+  eleventyConfig.addPlugin(pluginNavigation);
 
   // Image optimization: https://www.11ty.dev/docs/plugins/image/#eleventy-transform
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {

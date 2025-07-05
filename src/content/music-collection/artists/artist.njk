@@ -1,47 +1,73 @@
 ---
+eleventyNavigation:
+  key: "{{ artistData.artist }}"
+  parent: Artists
 eleventyComputed:
   title: "{{ artistData.artist }} | Music Collection"
 pagination:
   data: collections.artists
   size: 1
   alias: artistData
-permalink: "/music-collection/artists/{{ artistData.artist | slugify }}.html"
+permalink: "/music-collection/artists/{{ artistData.artist | accentSlug }}.html"
 ---
+
+{% include "partials/breadcrumb.njk" %}
+
+<div class="collection__page-title">
+  <h1>{{ artistData.artist }}</h1>
+</div>
 
 {% set formats = artistData.releases | groupby("format") %}
 {% for format, releases in formats %}
-<section>
-  <header class="row">
-    <h2 class="title">{{ format }}</h2>
-    <p class="meta"><span class="counter">{{ releases.length }}</span> release{{ 's' if releases.length !== 1 }}</p>
-  </header>
-  <ul role="list" class="collection__grid">
-    {% set sortedReleases = releases | sort(attribute='title') %}
-    {% for release in sortedReleases %}
-    <li>
-      <a href="/music-collection/releases/{{ release.title | slugify }}-{{ release.artist | slugify }}-{{ release.format | slugify }}.html" class="collection__item surface">
-        <img
-          {{ 'loading=eager' if loop.index <= 4 }}
-          src="../img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
-          sizes="(min-width: 1740px) 305px, (min-width: 1380px) calc(18.82vw - 19px), (min-width: 380px) calc(23.27vw - 12px), calc(6.67vw + 47px)"
-          alt="{{ release.title }}"
-          class="collection__image">
-        <div class="collection__details">
-          <h2 class="title">{{ release.title }}</h2>
-          {% if release.favorite %}
-          <div class="badge"><svg width="14" height="14" viewBox="0 0 24 24" class="icon-stroke" aria-hidden="true">
-            <use xlink:href="#icon-heart"></use>
-          </svg> favorite</div>
-          {% endif %}
-        </div>
-        <svg width="36" height="36" viewBox="-6 -6 36 36" class="collection__action action icon-stroke"
-          aria-hidden="true">
-          <use xlink:href="#icon-chevron-right"></use>
-        </svg>
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-{% if not loop.last %}<hr>{% endif %}
+  <section class="collection region">
+    <header class="collection__header repel">
+      <h2 class="title">{{ format }}</h2>
+      <p><span class="counter">{{ releases.length }}</span> release{{ 's' if releases.length !== 1 }}</p>
+    </header>
+    <ul role="list" class="collection__list grid" data-layout="thirds">
+      {% set sortedReleases = releases | sort(attribute='released') %}
+      {% for release in sortedReleases %}
+        <li class="collection__item">
+          <a
+            href="/music-collection/releases/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}-{{ release.release_id | accentSlug }}.html"
+            class="switcher"
+          >
+            <img
+              loading="eager"
+              src="../img/{{ release.title | accentSlug }}-{{ release.artist | accentSlug }}.jpg"
+              sizes="(min-width: 1740px) 305px, (min-width: 1380px) calc(18.82vw - 19px), (min-width: 380px) calc(23.27vw - 12px), calc(6.67vw + 47px)"
+              alt="{{ release.title }}"
+              class="collection__img"
+            />
+            <div class="collection__meta stack">
+              <h2 class="collection__release">{{ release.title }}</h2>
+              <span class="collection__description">
+                {% for format in release.formats %}
+                  {% if format.name == release.format %}
+                    <strong>{{ release.format }}</strong>
+                    - {{ format.descriptions | join(", ") }}{% if format.text %}, {{ format.text }}{% endif %}
+                  {% endif %}
+                {% endfor %}
+              </span>
+            </div>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
 {% endfor %}
+
+<nav aria-label="pagination" class="region repel">
+  {% if pagination.href.previous %}
+    {% set previousArtist = collections.artists[pagination.pageNumber - 1] %}
+    <a href="{{ pagination.href.previous }}" class="icon-link prev">
+      <span>Previous artist:</span> {{ previousArtist.artist }}
+    </a>
+  {% endif %}
+  {% if pagination.href.next %}
+    {% set nextArtist = collections.artists[pagination.pageNumber + 1] %}
+    <a href="{{ pagination.href.next }}" class="icon-link next">
+      <span>Next artist:</span> {{ nextArtist.artist }}
+    </a>
+  {% endif %}
+</nav>

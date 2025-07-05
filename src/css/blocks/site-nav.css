@@ -1,0 +1,9 @@
+.site-nav {
+  padding-block: var(--space-2xs);
+  border-block-end: 2px solid var(--color-dark);
+}
+
+.site-nav ul {
+  padding: 0;
+  margin: 0;
+}

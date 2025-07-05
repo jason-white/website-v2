@@ -1,31 +1,31 @@
 ---
+eleventyNavigation:
+  key: Genres
+  parent: Music Collection
 eleventyComputed:
   title: "{{ eleventyNavigation.key }} | {{ eleventyNavigation.parent }}"
 permalink: "/music-collection/genres/index.html"
 ---
 
-<ul role="list" class="index__grid">
+{% include "partials/breadcrumb.njk" %}
+
+<div class="index__page-title">
+  <h1>Genres</h1>
+</div>
+
+<ul role="list" class="index__list">
   {% set sortedGenres = collections.genres | sort(attribute='releases.length') | reverse %}
   {% for genre in sortedGenres %}
-  <li>
-    <a href="/music-collection/genres/{{ genre.genre | slugify }}.html" class="index__item index__item--vertical surface">
-      <h2 class="title">{{ genre.genre }}</h2>
-      <div class="preview__grid">
-        {% for release in genre.releases | slice(0, 4) %}
-        <img
-        src="../img/{{ release.title | slugify }}-{{ release.artist | slugify }}.jpg"
-        alt="{{ release.title }}"
-        loading="lazy"
-        sizes="(min-width: 1720px) 130px, (min-width: 1460px) calc(9.17vw - 26px), (min-width: 1380px) calc(18.33vw - 112px), (min-width: 1180px) calc(11.11vw - 22px), (min-width: 880px) calc(15.36vw - 24px), (min-width: 580px) calc(22.86vw - 21px), calc(46.54vw - 19px)"
-        class="preview__image preview__image--square">
-        {% endfor %}
-      </div>
-      <p class="meta"><span class="counter">{{ genre.releases.length }}</span> release{{ 's' if genre.releases.length !== 1 }}</p>
-      <svg width="36" height="36" viewBox="-6 -6 36 36" class="index__action action icon-stroke"
-        aria-hidden="true">
-        <use xlink:href="#icon-chevron-right"></use>
-      </svg>
-    </a>
-  </li>
+    <li class="index__item">
+      <a href="/music-collection/genres/{{ genre.genre | accentSlug }}.html">
+        <div class="index__meta repel">
+          <h2 class="index__heading">{{ genre.genre }}</h2>
+          <p class="index__secondary">
+            <span class="counter">{{ genre.releases.length }}</span>
+            release{{ 's' if genre.releases.length !== 1 }}
+          </p>
+        </div>
+      </a>
+    </li>
   {% endfor %}
 </ul>
