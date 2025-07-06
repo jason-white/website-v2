@@ -3,9 +3,9 @@
  * https://damianwalsh.co.uk/
  */
 
-import 'dotenv/config';
-import Fetch from '@11ty/eleventy-fetch';
-import {promises as fs} from 'fs';
+import "dotenv/config";
+import Fetch from "@11ty/eleventy-fetch";
+import {promises as fs} from "fs";
 
 Fetch.concurrency = 1;
 
@@ -13,13 +13,17 @@ const DISCOGS_TOKEN = process.env.DISCOGS_TOKEN;
 const DISCOGS_USER_AGENT = process.env.USER_AGENT;
 
 async function fetchWithRateLimit(url) {
+  if (process.env.NODE_ENV === "production") {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
   return Fetch(url, {
-    duration: '1d',
-    type: 'json',
+    duration: "1d",
+    type: "json",
     fetchOptions: {
       headers: {
-        'Authorization': `Discogs token=${DISCOGS_TOKEN}`,
-        'User-Agent': DISCOGS_USER_AGENT
+        "Authorization": `Discogs token=${DISCOGS_TOKEN}`,
+        "User-Agent": DISCOGS_USER_AGENT
       }
     }
   });
@@ -27,7 +31,7 @@ async function fetchWithRateLimit(url) {
 
 async function fetchReleaseDetails(release) {
   if (!release.release_id) {
-    console.error('No Discogs ID provided for release:', release.title);
+    console.error("No Discogs ID provided for release:", release.title);
     return release;
   }
 
@@ -38,7 +42,7 @@ async function fetchReleaseDetails(release) {
     const uniqueFormats = new Set();
     return {
       ...release,
-      label: releaseDetails.labels[0]?.name.replace(/\s*\(\d+\)\s*$/, '') || '',
+      label: releaseDetails.labels[0]?.name.replace(/\s*\(\d+\)\s*$/, "") || "",
       year: releaseDetails.year,
       notes: releaseDetails.notes,
       released: releaseDetails.released,
@@ -75,7 +79,7 @@ async function fetchReleaseDetails(release) {
 
 export default async function () {
   try {
-    const localData = await fs.readFile('src/_data/musicCollection.json', 'utf8');
+    const localData = await fs.readFile("src/_data/musicCollection.json", "utf8");
     const myCollection = JSON.parse(localData);
 
     // Use reduce to process sequentially
@@ -87,7 +91,7 @@ export default async function () {
 
     return {releases};
   } catch (error) {
-    console.error('Error processing music collection:', error);
+    console.error("Error processing music collection:", error);
     return {releases: []};
   }
 }
