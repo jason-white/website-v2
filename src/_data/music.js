@@ -15,7 +15,9 @@ const DISCOGS_USER_AGENT = process.env.USER_AGENT;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 async function fetchWithRateLimit(url) {
-  await delay(1000);
+  if (process.env.NODE_ENV === "production") {
+    await delay(1000);
+  }
 
   return Fetch(url, {
     duration: "1d",
@@ -81,7 +83,14 @@ export default async function () {
   try {
     const localData = await fs.readFile("src/_data/musicCollection.json", "utf8");
     const myCollection = JSON.parse(localData);
-    const releases = await Promise.all(myCollection.map(fetchReleaseDetails));
+
+    // Process releases sequentially to respect rate limits
+    const releases = [];
+    for (const release of myCollection) {
+      const releaseDetails = await fetchReleaseDetails(release);
+      releases.push(releaseDetails);
+    }
+
     return {releases};
   } catch (error) {
     console.error("Error processing music collection:", error);
