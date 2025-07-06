@@ -12,10 +12,10 @@ Fetch.concurrency = 1;
 const DISCOGS_TOKEN = process.env.DISCOGS_TOKEN;
 const DISCOGS_USER_AGENT = process.env.USER_AGENT;
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 async function fetchWithRateLimit(url) {
-  if (process.env.NODE_ENV === "production") {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  }
+  await delay(1000);
 
   return Fetch(url, {
     duration: "1d",
@@ -81,14 +81,7 @@ export default async function () {
   try {
     const localData = await fs.readFile("src/_data/musicCollection.json", "utf8");
     const myCollection = JSON.parse(localData);
-
-    // Use reduce to process sequentially
-    const releases = await myCollection.reduce(async (accPromise, release) => {
-      const acc = await accPromise;
-      const releaseDetails = await fetchReleaseDetails(release);
-      return [...acc, releaseDetails];
-    }, Promise.resolve([]));
-
+    const releases = await Promise.all(myCollection.map(fetchReleaseDetails));
     return {releases};
   } catch (error) {
     console.error("Error processing music collection:", error);
