@@ -5,31 +5,15 @@ title: Jason White - v2
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/css/global.css" />
   </head>
 
   <body>
-    <header class="wrapper">
-      <nav aria-label="main" class="site-nav">
-        <ul role="list" class="cluster">
-          {% for entry in collections.all | eleventyNavigation %}
-            <li>
-              <a
-                href="{{ entry.url }}"
-                {% if entry.url == page.url %}
-                  aria-current="page"
-                {% endif %}
-                {% if entry.url != '/' and entry.url != page.url and page.url.startsWith(entry.url) %}
-                  class="active"
-                {% endif %}
-                >{{ entry.title }}</a
-              >
-            </li>
-          {%- endfor %}
-        </ul>
-      </nav>
-    </header>
+    {% include "partials/header.njk" %}
     <main class="wrapper">
       {{ content | safe }}
 

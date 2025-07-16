@@ -34,10 +34,14 @@
   margin: 0;
 }
 
+.index__item {
+  --sidebar-target-width: 200px;
+  --gutter: var(--space-xs);
+}
+
 .index__item a {
   display: block;
-  padding-block: var(--space-s);
-  padding-inline: var(--space-3xs);
+  padding: var(--space-s);
   text-decoration: none;
 }
 
@@ -55,8 +59,6 @@
   height: auto;
   aspect-ratio: 1;
   display: block;
-  padding: var(--space-2xs);
-  border-inline-end: 1px solid var(--color-dark);
 }
 
 .index__meta * {
@@ -75,19 +77,6 @@
 .index__format {
   font-family: monospace;
   font-size: var(--size-step-00);
-}
-
-.index__item--with-art {
-  --sidebar-target-width: 200px;
-  --gutter: 0;
-}
-
-.index__item--with-art a {
-  padding: 0;
-}
-
-.index__item--with-art .index__meta {
-  padding: var(--space-2xs);
 }
 
 /* Collection grid styles */
