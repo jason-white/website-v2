@@ -6,12 +6,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+/* eslint-disable */
 export const handler = async (event, context) => {
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
 
-  const auth = Buffer.from(
-    `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
-  ).toString("base64");
+  const auth = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString(
+    "base64"
+  );
 
   const tokenEndpoint = `https://accounts.spotify.com/api/token`;
   const playerEndpoint = `https://api.spotify.com/v1/me/player/recently-played`;
@@ -19,38 +20,33 @@ export const handler = async (event, context) => {
   const options = {
     method: "POST",
     headers: {
-      Authorization: `Basic ${auth}`,
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": `Basic ${auth}`,
+      "Content-Type": "application/x-www-form-urlencoded"
     },
-    body: `grant_type=refresh_token&refresh_token=${refreshToken}&redirect_uri=${encodeURI(process.env.URL, +"/.netlify/functions/callback")}`,
+    body: `grant_type=refresh_token&refresh_token=${refreshToken}&redirect_uri=${encodeURI(process.env.URL, +"/.netlify/functions/callback")}`
   };
 
   const accessToken = await fetch(tokenEndpoint, options)
-    .then((res) => res.json())
-    .then((json) => {
+    .then(res => res.json())
+    .then(json => {
       return json.access_token;
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
     });
   return fetch(`${playerEndpoint}?limit=1`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+      Authorization: `Bearer ${accessToken}`
+    }
   })
-    .then((res) => res.json())
-    .then(({ items }) => {
-      const {
-        artists: artistsArray,
-        name,
-        external_urls: urls,
-        album,
-      } = items[0].track;
+    .then(res => res.json())
+    .then(({items}) => {
+      const {artists: artistsArray, name, external_urls: urls, album} = items[0].track;
 
-      const artists = artistsArray.map((artist) => ({
+      const artists = artistsArray.map(artist => ({
         name: artist.name,
-        href: artist.href,
+        href: artist.href
       }));
 
       const url = urls.spotify;
@@ -59,7 +55,7 @@ export const handler = async (event, context) => {
 
       return {
         statusCode: 200,
-        body: JSON.stringify({ artists, name, url, albumName, artworkUrl }),
+        body: JSON.stringify({artists, name, url, albumName, artworkUrl})
       };
     });
 };

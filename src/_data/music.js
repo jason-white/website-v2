@@ -1,11 +1,11 @@
+import "dotenv/config";
+import Fetch from "@11ty/eleventy-fetch";
+import {promises as fs} from "fs";
+
 /* music.js originally by Damian Walsh 🐰
  * https://github.com/damianwalsh/damianwalsh.github.io
  * https://damianwalsh.co.uk/
  */
-
-import "dotenv/config";
-import Fetch from "@11ty/eleventy-fetch";
-import {promises as fs} from "fs";
 
 Fetch.concurrency = 1;
 
