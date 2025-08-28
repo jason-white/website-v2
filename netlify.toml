@@ -10,8 +10,12 @@ package = "netlify-plugin-cache"
 
   [plugins.inputs]
   paths = [
+    "./dist/img/cache",
     ".cache"
   ]
+
+[[plugins]]
+package = "netlify-plugin-debug-cache"
 
 [dev]
   autoLaunch = false
