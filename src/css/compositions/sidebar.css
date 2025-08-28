@@ -34,3 +34,22 @@ EXCEPTIONS
   flex-grow: 999;
   min-width: var(--sidebar-content-min-width, 50%);
 }
+
+.sidebar[data-reverse="true"] {
+  flex-direction: row-reverse;
+}
+
+.sidebar[data-wrap="false"] {
+  flex-wrap: no-wrap;
+}
+
+.sidebar[data-direction="rtl"] > :last-child {
+  flex-basis: var(--sidebar-target-width, 20rem);
+  flex-grow: 1;
+}
+
+.sidebar[data-direction="rtl"] > :first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: var(--sidebar-content-min-width, 50%);
+}

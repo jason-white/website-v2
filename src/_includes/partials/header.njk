@@ -1,5 +1,14 @@
 <header class="wrapper">
-  <nav aria-label="main" class="site-nav">
+  <nav aria-label="main" class="site-nav repel">
+    <a href="/">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
+        <path fill="#000" d="M46.68.017C21.65 1.635 1.635 21.651.018 46.68H46.68V.017Z" />
+        <path
+          fill="#000"
+          d="M0 52.952h46.68v18.82a3.137 3.137 0 0 0 6.273 0V0C79.195 1.55 100 23.323 100 49.956 100 77.594 77.594 100 49.956 100 23.323 100 1.55 79.196 0 52.952Z"
+        />
+      </svg>
+    </a>
     <ul role="list" class="cluster">
       {% for entry in collections.all | eleventyNavigation %}
         <li>

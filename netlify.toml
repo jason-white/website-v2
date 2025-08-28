@@ -5,6 +5,13 @@
 [build]
   command = "npm run prod"
   publish = "dist"
+[[plugins]]
+package = "netlify-plugin-cache"
+
+  [plugins.inputs]
+  paths = [
+    ".cache"
+  ]
 
 [dev]
   autoLaunch = false

@@ -1,31 +1,31 @@
-import pluginFilters from './src/_config/filters.js';
-import pluginNavigation from '@11ty/eleventy-navigation';
-import {eleventyImageTransformPlugin} from '@11ty/eleventy-img';
+import pluginFilters from "./src/_config/filters.js";
+import pluginNavigation from "@11ty/eleventy-navigation";
+import {eleventyImageTransformPlugin} from "@11ty/eleventy-img";
 
 export default async function (eleventyConfig) {
-  eleventyConfig.addWatchTarget('content/**/*.{svg,webp,png,jpg,jpeg}');
-  eleventyConfig.addWatchTarget('src/css');
+  eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpg,jpeg}");
+  eleventyConfig.addWatchTarget("src/css");
 
-  eleventyConfig.addPassthroughCopy('./src/js');
-  eleventyConfig.addPassthroughCopy('./src/functions');
+  eleventyConfig.addPassthroughCopy("./src/js");
+  eleventyConfig.addPassthroughCopy("./src/functions");
 
   eleventyConfig.addPassthroughCopy({
-    'content/music-collection/img': 'img'
+    "content/music-collection/img": "img"
   });
 
-  eleventyConfig.addCollection('releases', function (collectionApi) {
+  eleventyConfig.addCollection("releases", function (collectionApi) {
     const musicData = collectionApi.getAll()[0]?.data?.music;
     if (!musicData || !musicData.releases) {
-      console.warn('Music data not found or invalid');
+      console.warn("Music data not found or invalid");
       return [];
     }
     return musicData.releases;
   });
 
-  eleventyConfig.addCollection('artists', function (collectionApi) {
+  eleventyConfig.addCollection("artists", function (collectionApi) {
     const musicData = collectionApi.getAll()[0]?.data?.music;
     if (!musicData || !musicData.releases) {
-      console.warn('Music data not found or invalid for artists collection');
+      console.warn("Music data not found or invalid for artists collection");
       return [];
     }
     const releases = musicData.releases;
@@ -37,10 +37,10 @@ export default async function (eleventyConfig) {
     return result;
   });
 
-  eleventyConfig.addCollection('genres', function (collectionApi) {
+  eleventyConfig.addCollection("genres", function (collectionApi) {
     const musicData = collectionApi.getAll()[0]?.data?.music;
     if (!musicData || !musicData.releases) {
-      console.warn('Music data not found or invalid for genres collection');
+      console.warn("Music data not found or invalid for genres collection");
       return [];
     }
     const releases = musicData.releases;
@@ -51,10 +51,10 @@ export default async function (eleventyConfig) {
     }));
   });
 
-  eleventyConfig.addCollection('formats', function (collectionApi) {
+  eleventyConfig.addCollection("formats", function (collectionApi) {
     const musicData = collectionApi.getAll()[0]?.data?.music;
     if (!musicData || !musicData.releases) {
-      console.warn('Music data not found or invalid for formats collection');
+      console.warn("Music data not found or invalid for formats collection");
       return [];
     }
     const releases = musicData.releases;
@@ -67,10 +67,10 @@ export default async function (eleventyConfig) {
     }));
   });
 
-  eleventyConfig.addCollection('releasesWithRelated', function (collectionApi) {
+  eleventyConfig.addCollection("releasesWithRelated", function (collectionApi) {
     const musicData = collectionApi.getAll()[0]?.data?.music;
     if (!musicData || !musicData.releases) {
-      console.warn('Music data not found or invalid');
+      console.warn("Music data not found or invalid");
       return [];
     }
 
@@ -85,7 +85,7 @@ export default async function (eleventyConfig) {
   const parseDate = dateStr => {
     if (!dateStr) return null;
 
-    const parts = dateStr.split('-');
+    const parts = dateStr.split("-");
     // If only year is provided
     if (parts.length === 1) {
       return new Date(parts[0], 0, 1);
@@ -98,10 +98,10 @@ export default async function (eleventyConfig) {
     return new Date(parts[0], parts[1] - 1, parts[2]);
   };
 
-  eleventyConfig.addCollection('releaseYears', function (collectionApi) {
+  eleventyConfig.addCollection("releaseYears", function (collectionApi) {
     const musicData = collectionApi.getAll()[0]?.data?.music;
     if (!musicData || !musicData.releases) {
-      console.warn('Music data not found or invalid');
+      console.warn("Music data not found or invalid");
       return [];
     }
 
@@ -127,40 +127,48 @@ export default async function (eleventyConfig) {
     }));
   });
 
+  eleventyConfig.addShortcode("externalLink", (url, text) => {
+    return `
+      <a aria-label="${text} (opens in a new tab or window)" class="external-link" href="${url}" rel="noopener" target="_blank">
+        ${text}
+      </a>
+    `;
+  });
+
   eleventyConfig.addPlugin(pluginFilters);
   eleventyConfig.addPlugin(pluginNavigation);
 
   // Image optimization: https://www.11ty.dev/docs/plugins/image/#eleventy-transform
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
     // File extensions to process in _site folder
-    extensions: 'html',
+    extensions: "html",
 
     // Output formats for each image.
-    formats: ['avif', 'webp', 'auto'],
+    formats: ["avif", "webp", "auto"],
 
     widths: [160, 320, 480, 640, 960, 1280],
 
     defaultAttributes: {
       // e.g. <img loading decoding> assigned on the HTML tag will override these values.
-      loading: 'lazy',
-      decoding: 'async',
-      sizes: '100vw'
+      loading: "lazy",
+      decoding: "async",
+      sizes: "100vw"
     },
-    urlPath: '/img/cache/',
-    outputDir: './dist/img/cache/'
+    urlPath: "/img/cache/",
+    outputDir: "./dist/img/cache/"
   });
 
-  eleventyConfig.addLayoutAlias('base', 'base.njk');
+  eleventyConfig.addLayoutAlias("base", "base.njk");
 
   return {
-    markdownTemplateEngine: 'njk',
+    markdownTemplateEngine: "njk",
 
     dir: {
-      output: 'dist',
-      input: 'src',
-      includes: '_includes',
-      data: '_data',
-      layouts: '_layouts'
+      output: "dist",
+      input: "src",
+      includes: "_includes",
+      data: "_data",
+      layouts: "_layouts"
     }
   };
 }

@@ -1,0 +1,15 @@
+.link__list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.link__list > li {
+  border-block-start: 1px solid var(--color-dark);
+  padding-block-start: var(--space-2xs);
+  padding-block-end: var(--space-xl);
+}
+
+.link__title {
+  font-size: var(--size-step-1);
+}

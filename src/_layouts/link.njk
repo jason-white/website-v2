@@ -1,0 +1,13 @@
+---
+layout: base.njk
+---
+
+<h1>{{ title }}</h1>
+
+<div>
+  {{ content | safe }}
+  <p>
+    External link:
+    <a aria-label="{{ title }} opens in new window or tab" href="{{ href }}" target="_blank"> {{ title }} </a>
+  </p>
+</div>

@@ -1,0 +1,24 @@
+---
+eleventyNavigation:
+  key: Links
+  order: 4
+eleventyComputed:
+  title: "{{ eleventyNavigation.key }}"
+permalink: "/links/index.html"
+---
+
+<h1 class="region">{{ eleventyNavigation.key }}</h1>
+
+<section class="region">
+  {%- set links = collections.link | reverse -%}
+  <ul role="list" class="link__list">
+    {% for link in links %}
+      <li>
+        <div class="sidebar">
+          <a class="link__title" href="{{ link.data.href }}"> {{ link.data.title }} </a>
+          <div class="stack">{{ link.content | safe }}</div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
